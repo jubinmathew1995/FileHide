@@ -8,14 +8,15 @@ def zipFun(src, dst):
     if not os.path.exists(os.getcwd() + "/output"):
         os.makedirs(os.getcwd() + "/output")
     zf = zipfile.ZipFile("temp.zip", "w")
-    zf.write(src, os.path.basename(src))
+    for fil in src:
+        zf.write(fil, os.path.basename(fil))
     zf.close()
     with open('output/' + os.path.basename(dst), 'wb') as wfd:
         for f in [dst, 'temp.zip']:
             with open(f, 'rb') as fd:
                 shutil.copyfileobj(fd, wfd, 1024 * 1024 * 10)
         fseek = str(os.path.getsize(dst))
-        fseek = (8 - len(fseek)) * "0" + fseek
+        fseek = (10 - len(fseek)) * "0" + fseek
         wfd.write(fseek)
     os.remove('temp.zip')
 
@@ -25,9 +26,9 @@ def unzipFun(src):
         os.makedirs(os.getcwd() + "/output")
     shutil.copy2(src, 'test.zip')
     temp = open('test.zip', "rb+")
-    temp.seek(-8, 2)
+    temp.seek(-10, 2)
     size = int(temp.read(8))
-    temp.seek(-8, 2)
+    temp.seek(-10, 2)
     temp.truncate()
     tempzip = open(os.getcwd() + "/temp2.zip", "wb")
     buffer_size = 1024 * 1024

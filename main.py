@@ -12,11 +12,12 @@ logo = tk.PhotoImage(file="ic_launcher.gif")
 Top.tk.call('wm', 'iconphoto', Top._w, logo)
 src = tk.StringVar()
 dst = tk.StringVar()
+workVar=tk.StringVar()
+srcs=()
 Top.minsize(250, 300)
 Top.maxsize(250, 300)
 defaultFrame = ttk.Frame(Top)
-
-
+working=ttk.Label(defaultFrame,textvariable=workVar)
 def updateLV():
     i = 0
     listview.delete(0, tk.END)
@@ -27,12 +28,16 @@ def updateLV():
 
 
 def onZip(*functions):
-    if (os.path.isfile(src.get()) and os.path.isfile(dst.get())):
+    if ( os.path.isfile(dst.get())):
+        workVar.set("Working,Please wait...")
+        Top.update()
         functions[0]()
-        zipper.zipFun(src.get(), dst.get())
+        zipper.zipFun(srcs, dst.get())
         src.set("")
         dst.set("")
+        workVar.set("")
         tkMessageBox.showinfo("Completed", "Mask was successful")
+
         updateLV()
     else:
         tkMessageBox.showerror("Error", "Invalid files")
@@ -40,17 +45,26 @@ def onZip(*functions):
 
 def onUnzip(*functions):
     if (os.path.isfile(src.get())):
+        workVar.set("Working,Please wait...")
+        Top.update()
         functions[0]()
         zipper.unzipFun(src.get())
+        src.set("")
+        dst.set("")
+        workVar.set("")
         tkMessageBox.showinfo("Completed", "Unmask was successful")
         updateLV()
 
 
-def Browse(pt, dir):
-    result = fd.askopenfilename(parent=pt, initialdir=os.getcwd(), title="Browse")
+def Browse(pt, dir,flag):
     globalv = globals()
-    globalv[dir].set(result)
-
+    if(not flag):
+        result = fd.askopenfilename(parent=pt, initialdir=os.getcwd(), title="Browse")
+        globalv[dir].set(result)
+    else:
+        result=fd.askopenfilenames(parent=pt, initialdir=os.getcwd(), title="Browse")
+        globalv[dir].set(str(result))
+        globalv["srcs"]=result
 
 def maskFun():
     newTop = tk.Toplevel(Top)
@@ -61,10 +75,10 @@ def maskFun():
     maskFrame = ttk.Frame(newTop)
     File2hide = ttk.LabelFrame(maskFrame, text="Files To Hide", )
     EntryField1 = ttk.Entry(File2hide, textvariable=src)
-    Browse1 = ttk.Button(File2hide, text="Browse", command=lambda: Browse(newTop, "src"))
+    Browse1 = ttk.Button(File2hide, text="Browse", command=lambda: Browse(newTop, "src",True))
     File2hideIn = ttk.LabelFrame(maskFrame, text="Files To Hide In", )
     EntryField2 = ttk.Entry(File2hideIn, textvariable=dst)
-    Browse2 = ttk.Button(File2hideIn, text="Browse", command=lambda: Browse(newTop, "dst"))
+    Browse2 = ttk.Button(File2hideIn, text="Browse", command=lambda: Browse(newTop, "dst",False))
     OkButton = ttk.Button(maskFrame, text="Mask", command=lambda: onZip(newTop.destroy))
     EntryField1.pack(side=tk.LEFT)
     Browse1.pack(side=tk.LEFT)
@@ -86,7 +100,7 @@ def unmaskFun():
     unmaskFrame = ttk.Frame(newTop)
     File2hide = ttk.LabelFrame(unmaskFrame, text="Files To Hide", )
     EntryField1 = ttk.Entry(File2hide, textvariable=src)
-    Browse1 = ttk.Button(File2hide, text="Browse", command=lambda: Browse(newTop, "src"))
+    Browse1 = ttk.Button(File2hide, text="Browse", command=lambda: Browse(newTop, "src",False))
     OkButton = ttk.Button(unmaskFrame, text="Unmask", command=lambda: onUnzip(newTop.destroy))
     EntryField1.pack(side=tk.LEFT)
     Browse1.pack(side=tk.LEFT)
@@ -123,11 +137,11 @@ def onselect(evt):
     Top.update()
     print os.getcwd() + "/output/" + value
 
-
 updateLV()
 listview.bind('<<ListboxSelect>>', onselect)
 mask.pack()
 unmask.pack()
+working.pack()
 listview.pack(fill="both", expand=True)
 Output.pack(side="left", fill="both", expand=True)
 defaultFrame.pack()
