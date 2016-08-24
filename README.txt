@@ -1,8 +1,15 @@
-*********FileHide************
 
-This application is completely build in python. And the GUI elements are included using Tkinter module.
-
+# FileHide
+A cross platform GUI application which hides a file in another file,keeping host working as normal.
 This application hides given files like pdf,images ,videos etc into another file like pdf,images etc.
-This application for now has a limit of 1GB hiding file and hidden file size i.e all together the size should not
-exceed 1GB limit.
-This app now can hide multiple files into a file.
+This app can also hide multiple files into a file.
+(The files should not excede 1GB in size)
+### Prerequisities
+* Python 2.7.x
+* Tkinter module.
+```
+apt-get install python-tk
+```
+
+## License
+This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details
