@@ -10,6 +10,11 @@ This app can also hide multiple files into a file.
 ```
 apt-get install python-tk
 ```
+### Screenshots
+![alt tag](Screenshots/1.jpg)
 
+![alt tag](Screenshots/2.jpg)
+
+![alt tag](Screenshots/3.jpg)
 ## License
 This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details
