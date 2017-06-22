@@ -68,8 +68,8 @@ def Browse(pt, dir,flag):
 
 def maskFun():
     newTop = tk.Toplevel(Top)
-    newTop.minsize(200, 150)
-    newTop.maxsize(200, 150)
+    newTop.minsize(250, 150)
+    newTop.maxsize(250, 150)
     logo = tk.PhotoImage(file="ic_launcher.gif")
     newTop.tk.call('wm', 'iconphoto', newTop._w, logo)
     maskFrame = ttk.Frame(newTop)
@@ -93,8 +93,8 @@ def maskFun():
 
 def unmaskFun():
     newTop = tk.Toplevel(Top)
-    newTop.minsize(200, 150)
-    newTop.maxsize(200, 150)
+    newTop.minsize(250, 150)
+    newTop.maxsize(250, 150)
     logo = tk.PhotoImage(file="ic_launcher.gif")
     newTop.tk.call('wm', 'iconphoto', newTop._w, logo)
     unmaskFrame = ttk.Frame(newTop)
@@ -109,6 +109,17 @@ def unmaskFun():
     unmaskFrame.pack()
     newTop.mainloop()
 
+def aboutFun():
+    newTop = tk.Toplevel(Top)
+    newTop.minsize(300, 150)
+    newTop.maxsize(300, 150)
+    logo = tk.PhotoImage(file="ic_launcher.gif")
+    newTop.tk.call('wm', 'iconphoto', newTop._w, logo)
+    img = ttk.Label(newTop, image=logo).pack(side="left")
+    Title = ttk.Label(newTop, text="FileHide", foreground="#ff5733", font=("Helvetica", 26), ).pack(side="top")
+    license = ttk.Label(newTop, text="license under MIT" ,font=("Helvetica", 10)).pack(side="top")
+    newTop.mainloop()
+
 
 mask = ttk.Button(defaultFrame, text="Mask", command=maskFun)
 unmask = ttk.Button(defaultFrame, text="Unmask", command=unmaskFun)
@@ -119,7 +130,7 @@ filemenu.add_command(label="Mask", command=maskFun)
 filemenu.add_command(label="Unmask", command=unmaskFun)
 filemenu.add_separator()
 filemenu.add_command(label="Exit", command=Top.destroy)
-helpmenu.add_command(label="About")
+helpmenu.add_command(label="About", command=aboutFun)
 menubar.add_cascade(label="File", menu=filemenu)
 menubar.add_cascade(label="Help", menu=helpmenu)
 Top.config(menu=menubar)
